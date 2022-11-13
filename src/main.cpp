@@ -11,11 +11,18 @@
 #define  MAX_RANG      (520)//the max measurement vaule of the module is 520cm(a little bit longer than  effective max range)
 #define  ADC_SOLUTION      (1023.0)//ADC accuracy of Arduino UNO is 10bit
 
+//declaration des constantes
+const int SPEAKER = 1;
+const int DANGER  = 50;
+const int LED     = 2;
+
 int sensityPin = A1;    // select the input pin 
 
 void setup() {
   // Serial begin
   Serial.begin(9600);
+  pinMode(SPEAKER, OUTPUT);
+  pinMode(LED    , OUTPUT);
 }
 
 float dist_t, sensity_t;
@@ -29,7 +36,18 @@ void loop() {
   Serial.print(dist_t,0);
   Serial.println("cm");
 
-  delay(500);
+  if (dist_t < DANGER)
+  {
+    digitalWrite(LED, HIGH);
+    tone(1, 440, 3000);
+    delay(400);
+    
+  }else{
 
+    digitalWrite(LED, LOW);
+    noTone(1);
+  }
+  
+  delay(500);
 }
 
